@@ -7,7 +7,7 @@ void main(){
     a= 10
     b= 5
     c= 7
-
+    
     Enter the number of processes : 5
 
     Enter the allocation matrix 
