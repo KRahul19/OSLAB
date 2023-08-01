@@ -1,84 +1,85 @@
 #include<stdio.h>
 #include<stdlib.h>
-int main()
-{
-    int rq[100],i,j,n,totalheadmoment=0,initial, size , move;
-    printf("Enter the number of requests\n");
+
+int main(){
+    int RQ[100],i,j,n,TotalHeadMoment=0,initial,size,move;
+    printf("Enter the number of requestes: \n");
     scanf("%d",&n);
-    printf("Enter the request sequence\n");
+    printf("Enter request Sequence\n");
     for(i=0;i<n;i++)
-    {
-        scanf("%d",&rq[i]);
-    }
-    printf("Enter the inital head position\n");
+    scanf("%d",&RQ[i]);
+    printf("Enter intial head position\n");
     scanf("%d",&initial);
     printf("Enter total disk size\n");
     scanf("%d",&size);
     printf("Enter the head movement direction for high 1 and low 0\n");
-    scanf("%d",&move);
-    // logic for scan disk scheduling 
-    /*logic for sorting the request array*/
-    for(i=0;i<n;i++)
-    {
+    scanf("%d",&move); 
+
+    for(i=0;i<n;i++){
         for(j=0;j<n-i-1;j++)
         {
-            if(rq[j]>rq[j+1])
+            if(RQ[j]>RQ[j+1])
             {
                 int temp;
-                temp = rq[j];
-                rq[j]= rq[j+1];
-                rq[j+1]=temp;
+                temp=RQ[j];
+                RQ[j]=RQ[j+1];
+                RQ[j+1]=temp;
             }
         }
     }
     int index;
-    for(i=0;i<n;i++)
-    {
-        if(initial<rq[i])
-        {
-            index = i;
+    for(i=0;i<n;i++){
+        if(initial<RQ[i]){
+            index=i;
             break;
         }
     }
-    // if movement is towards high value
-    if(move ==1)
-    {
-        printf("Sequence of request access");
-        for(i=index;i<n;i++)
-        {
-            printf("%d",rq[i]);
-            totalheadmoment = totalheadmoment+abs(rq[i]-initial);
-            initial = rq[i];
+    if (move==1){
+        printf("Sequence of request access: \n");
+        for(i=index;i<n;i++){
+            printf("%d",RQ[i]);
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
         }
-        //last movement for max size 
-        totalheadmoment = totalheadmoment + abs(size - rq[i-1]);
-        initial = size -1;
+        TotalHeadMoment=TotalHeadMoment+abs(size-RQ[i-1]-1);
+        initial=size-1;
+        for(i=index-1;i>=0;i--){
+            printf("%d",RQ[i]);
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+    }
+    else{
+        printf("Sequence of request access: \n");
         for(i=index-1;i>=0;i--)
         {
-            printf("%d", rq[i]);
-            totalheadmoment = totalheadmoment+abs(rq[i]-initial);
-            initial = rq[i];
+            printf("%d",RQ[i]);
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+        TotalHeadMoment=TotalHeadMoment+abs(RQ[i+1]-0);
+        initial=0;
+        for(i=index;i<n;i++){
+            printf("%d",RQ[i]);
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
         }
     }
-    // if movement is towards low value
-    else
-    {
-        printf("Sequence of request access:\n");
-        for(i=index -1;i>=0;i--)
-        {
-            totalheadmoment = totalheadmoment+abs(rq[i]-initial);
-            initial = rq[i];
-        }
-        // last movement for min size
-        totalheadmoment = totalheadmoment+abs(rq[i+1]-0);
-        initial = 0;
-        for(i= index;i<n;i++)
-        {
-            printf("%d", rq[i]);
-            totalheadmoment = totalheadmoment+abs(rq[i]-initial);
-            initial = rq[i];
-        }
-    }
-    printf("\nTotal head moment is %d", totalheadmoment);
+    printf("\nTotal head movement is %d",TotalHeadMoment);
     return 0;
 }
+
+/*output:
+Enter the number of requestes: 
+7
+Enter request Sequence
+82 170 43 140 24 16 190
+Enter intial head position
+50
+Enter total disk size
+200
+Enter the head movement direction for high 1 and low 0
+1
+Sequence of request access: 
+82140170190432416
+Total head movement is 332*/
